@@ -5,8 +5,8 @@ export interface User {
     name: string;
     email: string;
     password: string;
-    created_at?: Date;
-    address: address[];
-    order: order[];
-    review: review[];
+    created_at? : Date | null ;
+    address?: address[];
+    order?: order[];
+    review?: review[];
 }
