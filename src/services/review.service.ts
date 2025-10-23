@@ -39,6 +39,12 @@ export async function getReviewByUserId(userId : number, include : boolean = fal
 
 export async function getReviewByProductId(productId: number, include : boolean = false) {
     const reviews = await prisma.review.findMany({
-        
-    })
+        where : {
+            product_id: productId
+        }, include : {
+            product : include,
+            user: include
+        }
+    }) 
+    return reviews;
 }
