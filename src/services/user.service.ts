@@ -1,13 +1,12 @@
-import { PrismaClient } from "../generated/prisma";
-import type { User } from "../model/user.model";
+import { PrismaClient, type user } from "../generated/prisma";
 
 const prisma = new PrismaClient();
 
 // ===========================================
 //                GET METHODS
 // ===========================================
-export async function getAllUsers(include: boolean = false): Promise<User[]> {
-    const users: User[] = await prisma.user.findMany(
+export async function getAllUsers(include: boolean = false): Promise<user[]> {
+    const users: user[] = await prisma.user.findMany(
         {
             include: {
                 address: include,
@@ -19,8 +18,8 @@ export async function getAllUsers(include: boolean = false): Promise<User[]> {
     return users;
 }
 
-export async function getUserById(id: number, include: boolean = false): Promise<User | null> {
-    const user: User | null = await prisma.user.findUnique({
+export async function getUserById(id: number, include: boolean = false): Promise<user | null> {
+    const user: user | null = await prisma.user.findUnique({
         where: {
             id: id
         },
@@ -33,8 +32,8 @@ export async function getUserById(id: number, include: boolean = false): Promise
     return user;
 }
 
-export async function getUserByName(name: string, include: boolean = false): Promise<User[]> {
-    const users: (User[]) = await prisma.user.findMany({
+export async function getUserByName(name: string, include: boolean = false): Promise<user[]> {
+    const users: (user[]) = await prisma.user.findMany({
         where: {
             name: name,
         },
@@ -47,8 +46,8 @@ export async function getUserByName(name: string, include: boolean = false): Pro
     return users;
 }
 
-export async function getUserByEmail(email: string, include: boolean = false): Promise<User | null> {
-    const user: (User | null) = await prisma.user.findUnique({
+export async function getUserByEmail(email: string, include: boolean = false): Promise<user | null> {
+    const user: (user | null) = await prisma.user.findUnique({
         where: {
             email: email
         },

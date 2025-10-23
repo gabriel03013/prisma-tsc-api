@@ -1,5 +1,6 @@
 import fastify from "fastify";
 import { userRoutes } from "./routes/user.route";
+import { reviewRoutes } from "./routes/review.route";
 
 const app = fastify({ logger: true });
 
@@ -13,6 +14,7 @@ const startServer = async () => {
     });
 
     app.register(userRoutes);
+    app.register(reviewRoutes);
 
     app
       .listen({ port: 3000 })
@@ -20,11 +22,10 @@ const startServer = async () => {
       .catch((err) => {
         console.log(err);
       });
-
   } catch (err) {
-    console.log(err)
+    console.log(err);
     process.exit(1);
   }
-}
+};
 
 startServer();

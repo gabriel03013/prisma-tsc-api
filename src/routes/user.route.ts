@@ -1,7 +1,7 @@
-import { getAllUsersHandler, getUserByEmailHandler, getUserByIdHandler, getUserByNameHandler } from "../controller/user.controller";
 import fastify, { type FastifyInstance } from "fastify";
-import type { User } from "../model/user.model";
-import { getUserByEmail } from "../services/user.service";
+import * as UserController from "../controller/user.controller";
+import * as ReviewController from "../controller/review.controller"
+
 
 export async function userRoutes(app: FastifyInstance): Promise<void> {
 
@@ -15,7 +15,7 @@ export async function userRoutes(app: FastifyInstance): Promise<void> {
   app.get("/user", async (req, res) => {
     const { include } = req.query as { include?: string };
     const includeData = include === "true";
-    return getAllUsersHandler(req, res, includeData);
+    return UserController.getAllUsersHandler(req, res, includeData);
   });
 
   // * getUserById -> returns the user with the specified ID or returns an empty array
@@ -26,7 +26,7 @@ export async function userRoutes(app: FastifyInstance): Promise<void> {
 
     const includeData = include === "true";
 
-    return getUserByIdHandler(req, res, Number(id), includeData);
+    return UserController.getUserByIdHandler(req, res, Number(id), includeData);
   });
 
   // * getUserByName -> returns the user/users with the specified NAME or returns an empty array
@@ -43,7 +43,7 @@ export async function userRoutes(app: FastifyInstance): Promise<void> {
     const { name } = req.params as { name: string }
     const { include } = req.query as { include?: string }
     const includeData = include === "true";
-    return getUserByNameHandler(req, res, name, includeData);
+    return UserController.getUserByNameHandler(req, res, name, includeData);
   })
 
   // * getUserByEmail -> returns the user with the specified EMAIL or returns an empty array
@@ -59,6 +59,7 @@ export async function userRoutes(app: FastifyInstance): Promise<void> {
     const {email} = req.params as {email: string}
     const {include} = req.query as {include?: string}
     const includeData = include === "true";
-    return getUserByEmailHandler(req, res, email, includeData)
+    return UserController.getUserByEmailHandler(req, res, email, includeData)
   })
+
 }
