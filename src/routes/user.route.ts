@@ -1,6 +1,5 @@
-import fastify, { type FastifyInstance } from "fastify";
+import { type FastifyInstance } from "fastify";
 import * as UserController from "../controller/user.controller";
-import * as ReviewController from "../controller/review.controller"
 
 
 export async function userRoutes(app: FastifyInstance): Promise<void> {

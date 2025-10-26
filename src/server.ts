@@ -1,6 +1,10 @@
 import fastify from "fastify";
 import { userRoutes } from "./routes/user.route";
 import { reviewRoutes } from "./routes/review.route";
+import { categoryRoutes } from "./routes/category.route";
+import { orderRoutes } from "./routes/order.route";
+import { productRoutes } from "./routes/product.route";
+import { paymentRoutes } from "./routes/payment.route";
 
 const app = fastify({ logger: true });
 
@@ -15,10 +19,14 @@ const startServer = async () => {
 
     app.register(userRoutes);
     app.register(reviewRoutes);
+    app.register(categoryRoutes);
+    app.register(orderRoutes);
+    app.register(productRoutes);
+    app.register(paymentRoutes);
 
     app
       .listen({ port: 3000 })
-      .then(() => console.log("server running"))
+      .then(() => console.log("server running on localhost:3000"))
       .catch((err) => {
         console.log(err);
       });

@@ -1,4 +1,4 @@
-import { PrismaClient, type product, type review, type user } from "../generated/prisma";
+import { PrismaClient } from "../generated/prisma";
 
 const prisma = new PrismaClient();
 
@@ -14,22 +14,22 @@ export async function getAllReviews(include: boolean = false) {
 }
 
 export async function getReviewById(id: number, include: boolean = false) {
-    const review  = await prisma.review.findUnique({
-        where : {
-            id : id
+    const review = await prisma.review.findUnique({
+        where: {
+            id: id
         }, include: {
-            product : include,
+            product: include,
             user: include
         }
     })
     return review;
 }
 
-export async function getReviewByUserId(userId : number, include : boolean = false) {
+export async function getReviewByUserId(userId: number, include: boolean = false) {
     const reviews = await prisma.review.findMany({
-        where : {
-            user_id : userId
-        }, include : {
+        where: {
+            user_id: userId
+        }, include: {
             product: include,
             user: include
         }
@@ -37,14 +37,14 @@ export async function getReviewByUserId(userId : number, include : boolean = fal
     return reviews;
 }
 
-export async function getReviewByProductId(productId: number, include : boolean = false) {
+export async function getReviewByProductId(productId: number, include: boolean = false) {
     const reviews = await prisma.review.findMany({
-        where : {
+        where: {
             product_id: productId
-        }, include : {
-            product : include,
+        }, include: {
+            product: include,
             user: include
         }
-    }) 
+    })
     return reviews;
 }

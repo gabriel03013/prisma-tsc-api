@@ -31,7 +31,7 @@ model address {
 
 model category {
   id          Int       @id(map: "categoria_pkey") @default(autoincrement())
-  name        String    @db.VarChar(100)
+  name        String    @db.VarChar(100) @unique
   description String?
   product     product[]
 }
