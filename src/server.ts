@@ -1,4 +1,5 @@
 import fastify from "fastify";
+import fastifyCors from "@fastify/cors";
 import { userRoutes } from "./routes/user.route";
 import { reviewRoutes } from "./routes/review.route";
 import { categoryRoutes } from "./routes/category.route";
@@ -16,7 +17,7 @@ const startServer = async () => {
     app.get("/", () => {
       return "hello bun!";
     });
-
+    app.register(fastifyCors)
     app.register(userRoutes);
     app.register(reviewRoutes);
     app.register(categoryRoutes);
@@ -25,8 +26,8 @@ const startServer = async () => {
     app.register(paymentRoutes);
 
     app
-      .listen({ port: 3000 })
-      .then(() => console.log("server running on localhost:3000"))
+      .listen({ port: 8000 })
+      .then(() => console.log("server running on localhost:8080"))
       .catch((err) => {
         console.log(err);
       });
