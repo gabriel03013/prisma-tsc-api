@@ -1,6 +1,5 @@
-import { PrismaClient, type user } from "../generated/prisma";
-
-const prisma = new PrismaClient();
+import { type user } from "../generated/prisma/client";
+import { prisma } from "../db/prisma";
 
 // ===========================================
 //                GET METHODS
