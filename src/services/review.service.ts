@@ -1,6 +1,5 @@
-import { PrismaClient, type product, type review, type user } from "../generated/prisma";
-
-const prisma = new PrismaClient();
+import { type product, type review, type user } from "../generated/prisma/client";
+import { prisma } from "../db/prisma";
 
 
 export async function getAllReviews(include: boolean = false) {

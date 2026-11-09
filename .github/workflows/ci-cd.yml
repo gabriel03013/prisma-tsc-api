@@ -1,0 +1,67 @@
+name: CI and CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Validate and test
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://ci:ci@127.0.0.1:5432/ci
+      DATABASE_URL_UNPOOLED: postgresql://ci:ci@127.0.0.1:5432/ci
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: bun run db:generate
+
+      - name: Type-check
+        run: bun run typecheck
+
+      - name: Run tests
+        run: bun run test
+
+      - name: Build deployment image
+        run: docker build --tag prisma-tsc-api-ci .
+
+  deploy:
+    name: Deploy to Render
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render deploy
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "Missing GitHub Actions secret RENDER_DEPLOY_HOOK_URL."
+            exit 1
+          fi
+
+          curl --silent --show-error --fail-with-body \
+            --request POST \
+            --output /dev/null \
+            --write-out "Render accepted the deploy request (HTTP %{http_code}).\n" \
+            "$RENDER_DEPLOY_HOOK_URL"
